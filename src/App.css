@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  height: 15vh;
+  background-color: rgb(105, 202, 105);
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.app-logo {
+  height: 40px;
+  width: 40px;
+  padding: 2px;
+  margin: 22px;
+}
+.searchbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: gray; */
+  box-sizing: border-box;
+  padding: 5px;
+}
+.search-bar {
+  width: 250px;
+  height: 30px;
+  padding: 2px;
+
+  /* padding-top: 4px;
+  margin: 22px;
+  margin-top: 24px; */
+  justify-content: center;
+  display: flex;
+}
+
+.search-icon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+  padding: 8px;
+  background-color: white;
+
+  cursor: pointer;
+}
+
+.user-logo {
+  height: 40px;
+  width: 40px;
+  padding: 2px;
+  margin: 22px;
+}
+
+.main {
+  display: flex;
+  height: 100%;
+  background-color: rgb(164, 230, 164);
+}
+/* .sidebar {
+  width: 20%;
+  background-color: rgb(163, 241, 156);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+} */
+
+.sidebar-open {
+  width: 40vh;
+  height: 100%;
+  background-color: rgb(163, 241, 156);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.sidebar-close {
+  width: 10vh;
+  height: 100%;
+  background-color: rgb(163, 241, 156);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.sticky-button {
+  position: absolute;
+  top: 50%;
+  right: -20px; /* Adjust this value to place it outside the sidebar */
+  transform: translateY(-50%);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(163, 241, 156);
+  /* color: white; */
+  border: none;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  border-radius: 50px;
+}
+li {
+  list-style: none;
+  text-decoration: none;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+
+  padding: 15px;
+
+  color: black;
+}
+.sidebar-item:hover {
+  background-color: rgb(105, 202, 105);
+  color: white;
+  cursor: pointer;
+}
+.icon {
+  height: 20px;
+  width: 20px;
+  padding-right: 10px;
+  margin: 2px;
+}
+
+.settings {
+  height: 75vh;
+  padding-left: 400px;
+}
+.dashboard {
+  height: 75vh;
+  padding-left: 400px;
+}
+.home {
+  height: 72vh;
+  padding-left: 400px;
+}
+.trending-stocks {
+  height: inherit;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* padding: 10px; */
+}
+.stock-title {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  font-style: italic;
+  color: white;
+  background-color: green;
+  text-align: start;
+}
+
+.filter-btn {
+  padding: 5px;
+  width: 60px;
+  margin-right: 10px;
+  color: white;
+  background-color: rgb(68, 141, 68);
+  font: large;
+  cursor: pointer;
+  border: none;
+  box-shadow: black;
+}
+
+.filter-btn:hover {
+  background-color: rgb(105, 202, 105);
+  font-weight: 400;
+}
+
+table {
+  height: inherit;
+  width: 80%;
+  margin: 20px;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+th {
+  background-color: rgb(105, 202, 105);
+  color: white;
+  border: 1px solid black;
+}
+
+td {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.footer {
+  height: 10vh;
+  background-color: rgb(207, 201, 201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
