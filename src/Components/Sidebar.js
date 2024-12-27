@@ -17,8 +17,8 @@ const Sidebar = () => {
   return (
     <div>
       {!sidebar ? (
-        <>
-          <ul className="sidebar-open">
+        <div className="sidebar-open">
+          <ul>
             <Link to={"/"} style={{ textDecoration: "none" }}>
               <div
                 className="sidebar-item"
@@ -51,12 +51,7 @@ const Sidebar = () => {
             </Link>
 
             <Link to={"/TrendingStocks"} style={{ textDecoration: "none" }}>
-              <div
-                className="sidebar-item"
-                onClick={() => {
-                  setShowSearchBar(true);
-                }}
-              >
+              <div className="sidebar-item">
                 <img
                   src="https://www.svgrepo.com/show/134943/stocks-graphic.svg"
                   alt="Stocks"
@@ -81,10 +76,10 @@ const Sidebar = () => {
               ></img>
             )}
           </button>
-        </>
+        </div>
       ) : (
-        <>
-          <ul className="sidebar-close">
+        <div className="sidebar-close">
+          <ul>
             <Link to={"/"}>
               <div
                 className="sidebar-item"
@@ -115,12 +110,7 @@ const Sidebar = () => {
             </Link>
 
             <Link to={"/TrendingStocks"}>
-              <div
-                className="sidebar-item"
-                onClick={() => {
-                  setShowSearchBar(true);
-                }}
-              >
+              <div className="sidebar-item">
                 <img
                   src="https://www.svgrepo.com/show/134943/stocks-graphic.svg"
                   alt="Stocks"
@@ -144,7 +134,7 @@ const Sidebar = () => {
               ></img>
             )}
           </button>
-        </>
+        </div>
       )}
     </div>
   );
