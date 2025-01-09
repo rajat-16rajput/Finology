@@ -130,6 +130,14 @@ li {
   height: 75vh;
   padding-left: 400px;
 }
+.error {
+  height: 75vh;
+  align-items: center;
+  justify-content: center;
+  /* padding-left: 400px; */
+  display: flex;
+  flex-direction: column;
+}
 .trending-stocks {
   height: 75vh; /* Set a fixed height */
   overflow-y: auto; /* Add scroll if table is longer */
@@ -181,8 +189,13 @@ th {
   background-color: rgb(105, 202, 105);
   color: white;
   border: 1px solid black;
+  padding: 5px;
 }
 
+.table-heading {
+  display: flex;
+  justify-content: space-evenly;
+}
 td {
   text-align: center;
   border: 1px solid black;
@@ -199,7 +212,7 @@ tbody td {
 .filter-menu {
   /* border: 1px solid black; */
   width: 200px;
-  height: 230px;
+  height: 270px;
   margin: 20px;
   padding: 10px;
   background-color: white;
@@ -209,6 +222,22 @@ tbody td {
 .filter-header {
   display: flex;
   justify-content: space-between;
+}
+
+.range-filter {
+  padding: 4px;
+  margin: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.max-range {
+  padding: 2px;
+  margin: 2px;
+}
+.min-range {
+  padding: 2px;
+  margin: 2px;
 }
 .filter-list-item {
   display: flex;

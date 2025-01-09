@@ -8,13 +8,13 @@ const contentRouter = createBrowserRouter([
   {
     path: "/",
     element: <Main />, // Use Main as the parent route
+    errorElement: <Error />,
     children: [
-      { path: "/", element: <Dashboard />, errorElement: <Error /> }, // Default child route
-      { path: "settings", element: <Settings />, errorElement: <Error /> },
+      { path: "/", element: <Dashboard /> }, // Default child route
+      { path: "settings", element: <Settings /> },
       {
         path: "trendingstocks",
         element: <TrendingStocks />,
-        errorElement: <Error />,
       },
     ],
   },

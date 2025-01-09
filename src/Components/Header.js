@@ -10,7 +10,8 @@ const Header = () => {
     setInput("");
   }
 
-  function handleChange(e) {
+  function handleInput(e) {
+    setSearchText(e.target.value);
     setInput(e.target.value);
   }
 
@@ -25,11 +26,11 @@ const Header = () => {
         <div className="searchbar-container">
           <input
             type="text"
-            placeholder={` Search in Trending Stocks of India`}
+            placeholder={`Search in Trending Stocks of India`}
             className="search-bar"
             value={input}
             onChange={(e) => {
-              handleChange(e);
+              handleInput(e);
             }}
           ></input>
           <img
