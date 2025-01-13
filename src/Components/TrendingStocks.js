@@ -19,7 +19,7 @@ const TrendingStocks = () => {
 
   // Storing the data into the array variables
   const [stockApiData, setStockApiData] = useState([]);
-  const [filteredList, setFilteredList] = useState([]);
+  const [displayList, setDisplayList] = useState([]);
   const [searchList, setSearchList] = useState([]);
 
   // To toggle the visibility of the filter menu
@@ -38,7 +38,7 @@ const TrendingStocks = () => {
     const res = await fetch(STOCK_API);
     const data = await res.json();
     setStockApiData(data);
-    setFilteredList(data);
+    setDisplayList(data);
     setSearchList(data);
   }
 
@@ -53,18 +53,18 @@ const TrendingStocks = () => {
 
   function filterSearchList() {
     //Filtering the list based on the searchText value.
-    let searchListArray = stockApiData.filter((element) => {
+    let searchListArray = displayList.filter((element) => {
       return element?.name.toLowerCase()?.includes(searchText.toLowerCase());
     });
 
     //Setting the FilteredList variable with the filtered Data in order to render the latest results.
-    setFilteredList(searchListArray);
+    setDisplayList(searchListArray);
   }
 
   //Updating the filterSearchList whenever the searchText is Changed. Used DEBOUNCING
   useEffect(() => {
     if (searchText === "") {
-      setFilteredList(stockApiData);
+      setDisplayList(stockApiData);
     }
 
     if (searchText !== "") {
@@ -87,7 +87,7 @@ const TrendingStocks = () => {
   function ResetFilters() {
     setMaxRange(Infinity);
     setMinRange(0);
-    setFilteredList(stockApiData);
+    setDisplayList(stockApiData);
     setIsCheckedOpen(true);
     setIsCheckedClose(true);
     setIsCheckedHigh(true);
@@ -137,7 +137,7 @@ const TrendingStocks = () => {
     let filteredTable = stockApiData.filter((element) => {
       return element.open >= minRange && element.open <= maxRange;
     });
-    setFilteredList(filteredTable);
+    setDisplayList(filteredTable);
   }
 
   return (
@@ -155,7 +155,7 @@ const TrendingStocks = () => {
       </div>
       <div className="stock-body">
         {showFilterMenu ? (
-          filteredList.length != 0 ? (
+          displayList.length != 0 ? (
             //Rendering the Table from the FilteredList with the Filter Menu being displayed
             <table>
               <thead>
@@ -226,7 +226,7 @@ const TrendingStocks = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredList.map((element) => {
+                {displayList.map((element) => {
                   return (
                     <tr key={element.name}>
                       <td>
@@ -305,7 +305,7 @@ const TrendingStocks = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredList.map((element) => {
+              {displayList.map((element) => {
                 return (
                   <tr key={element.name}>
                     <td>
