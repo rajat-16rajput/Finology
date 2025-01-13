@@ -171,6 +171,18 @@ li {
   box-shadow: black;
 }
 
+.reset-defaults {
+  padding: 5px;
+  width: 60px;
+  margin-right: 10px;
+  color: white;
+  background-color: rgb(68, 141, 68);
+  font: large;
+  cursor: pointer;
+  border: none;
+  box-shadow: black;
+}
+
 .filter-btn:hover {
   background-color: rgb(105, 202, 105);
   font-weight: 400;

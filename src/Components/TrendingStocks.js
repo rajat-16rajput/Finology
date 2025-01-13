@@ -22,7 +22,6 @@ const TrendingStocks = () => {
   const [filterList, setFilterList] = useState([]);
   const [originalFilterList, setOriginalFilterList] = useState([]);
   const [searchList, setSearchList] = useState([]);
-  const [sortedList, setSortedList] = useState([]);
 
   // To toggle the visibility of the filter menu
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -44,7 +43,6 @@ const TrendingStocks = () => {
     setOriginalFilterList(data);
     setFilterList(data);
     setSearchList(data);
-    setSortedList(data);
   }
 
   //useEffect to fetch and render data
@@ -168,11 +166,8 @@ const TrendingStocks = () => {
     setFilterList(filteredTable);
   }
 
-  // useEffect(() => {
-  //   setSearchList(sortedList);
-  // }, [sortedList]);
+  //Sort Functionality
   let sortList;
-
   if (!showFilterMenu) {
     sortList = [...stockApiData];
   } else {
@@ -235,34 +230,49 @@ const TrendingStocks = () => {
     setSearchList(sortList);
     setFilterList(sortList);
   }
-
   function handleSortName() {
     console.log("Sort name called");
 
     if (sequence === false) {
-      sortList.sort((a, b) => a.name.localeCompare(b.name));
+      sortList.sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      );
     } else {
       sortList.sort(function (a, b) {
-        return b.name.localeCompare(a.name);
+        return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
       });
     }
     setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
-
+  function resetDefault() {
+    setSearchList(stockApiData);
+    setFilterList(stockApiData);
+    setShowFilterMenu(false);
+  }
   return (
     <div className="trending-stocks">
       <div className="stock-title">
         <h3>Trending Stocks of India</h3>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            ToggleFilterMenuVisibility();
-          }}
-        >
-          <h3>Filter</h3>
-        </button>
+        <div>
+          <button
+            className="reset-defaults"
+            onClick={() => {
+              resetDefault();
+            }}
+          >
+            <h3>Reset</h3>
+          </button>
+          <button
+            className="filter-btn"
+            onClick={() => {
+              ToggleFilterMenuVisibility();
+            }}
+          >
+            <h3>Filter</h3>
+          </button>
+        </div>
       </div>
       <div className="stock-body">
         {showFilterMenu ? (
@@ -286,70 +296,78 @@ const TrendingStocks = () => {
                       />
                     </div>
                   </th>
-                  <th>
-                    {" "}
-                    <div className="table-heading">
-                      <h4>Open</h4>
-                      <img
-                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                        width="20px"
-                        height="20px"
-                        alt="sort icon"
-                        onClick={() => {
-                          handleSortOpen();
-                        }}
-                        className="sort-icon"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    {" "}
-                    <div className="table-heading">
-                      <h4>High</h4>
-                      <img
-                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                        width="20px"
-                        height="20px"
-                        alt="sort icon"
-                        onClick={() => {
-                          handleSortHigh();
-                        }}
-                        className="sort-icon"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    {" "}
-                    <div className="table-heading">
-                      <h4>Low</h4>
-                      <img
-                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                        width="20px"
-                        height="20px"
-                        alt="sort icon"
-                        onClick={() => {
-                          handleSortLow();
-                        }}
-                        className="sort-icon"
-                      />
-                    </div>
-                  </th>
-                  <th>
-                    {" "}
-                    <div className="table-heading">
-                      <h4>Close</h4>
-                      <img
-                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                        width="20px"
-                        height="20px"
-                        alt="sort icon"
-                        onClick={() => {
-                          handleSortClose();
-                        }}
-                        className="sort-icon"
-                      />
-                    </div>
-                  </th>
+                  {isCheckedOpen && (
+                    <th>
+                      {" "}
+                      <div className="table-heading">
+                        <h4>Open</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortOpen();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                  )}
+                  {isCheckedHigh && (
+                    <th>
+                      {" "}
+                      <div className="table-heading">
+                        <h4>High</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortHigh();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                  )}
+                  {isCheckedLow && (
+                    <th>
+                      {" "}
+                      <div className="table-heading">
+                        <h4>Low</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortLow();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                  )}
+                  {isCheckedClose && (
+                    <th>
+                      {" "}
+                      <div className="table-heading">
+                        <h4>Close</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortClose();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -518,7 +536,6 @@ const TrendingStocks = () => {
                 value={minRange}
                 onChange={(e) => {
                   handleMinChange(e);
-                  //
                 }}
               >
                 <option value={0}>Min</option>
