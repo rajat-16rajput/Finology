@@ -206,6 +206,9 @@ th {
   display: flex;
   justify-content: space-evenly;
 }
+.sort-icon {
+  cursor: pointer;
+}
 td {
   text-align: center;
   border: 1px solid black;

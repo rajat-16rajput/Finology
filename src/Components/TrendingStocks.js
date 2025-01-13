@@ -22,9 +22,13 @@ const TrendingStocks = () => {
   const [filterList, setFilterList] = useState([]);
   const [originalFilterList, setOriginalFilterList] = useState([]);
   const [searchList, setSearchList] = useState([]);
+  const [sortedList, setSortedList] = useState([]);
 
   // To toggle the visibility of the filter menu
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+
+  //Toggling asc desc sequence
+  const [sequence, setSequence] = useState(false);
 
   //Handling range of advanced filters
   const [minRange, setMinRange] = useState(-Infinity);
@@ -40,6 +44,7 @@ const TrendingStocks = () => {
     setOriginalFilterList(data);
     setFilterList(data);
     setSearchList(data);
+    setSortedList(data);
   }
 
   //useEffect to fetch and render data
@@ -161,6 +166,88 @@ const TrendingStocks = () => {
     setFilterList(filteredTable);
   }
 
+  // useEffect(() => {
+  //   setSearchList(sortedList);
+  // }, [sortedList]);
+  let sortList;
+
+  if (!showFilterMenu) {
+    sortList = [...stockApiData];
+  } else {
+    sortList = [...originalFilterList];
+  }
+
+  function handleSortOpen() {
+    if (sequence === false) {
+      sortList.sort(function (a, b) {
+        return a.open - b.open;
+      });
+    } else {
+      sortList.sort(function (a, b) {
+        return b.open - a.open;
+      });
+    }
+    setSequence(!sequence);
+    setSearchList(sortList);
+    setFilterList(sortList);
+  }
+  function handleSortClose() {
+    if (sequence === false) {
+      sortList.sort(function (a, b) {
+        return a.close - b.close;
+      });
+    } else {
+      sortList.sort(function (a, b) {
+        return b.close - a.close;
+      });
+    }
+    setSequence(!sequence);
+    setSearchList(sortList);
+    setFilterList(sortList);
+  }
+  function handleSortHigh() {
+    if (sequence === false) {
+      sortList.sort(function (a, b) {
+        return a.high - b.high;
+      });
+    } else {
+      sortList.sort(function (a, b) {
+        return b.high - a.high;
+      });
+    }
+    setSequence(!sequence);
+    setSearchList(sortList);
+    setFilterList(sortList);
+  }
+  function handleSortLow() {
+    if (sequence === false) {
+      sortList.sort(function (a, b) {
+        return a.low - b.low;
+      });
+    } else {
+      sortList.sort(function (a, b) {
+        return b.low - a.low;
+      });
+    }
+    setSequence(!sequence);
+    setSearchList(sortList);
+  }
+
+  function handleSortName() {
+    console.log("Sort name called");
+
+    if (sequence === false) {
+      sortList.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      sortList.sort(function (a, b) {
+        return b.name.localeCompare(a.name);
+      });
+    }
+    setSequence(!sequence);
+    setSearchList(sortList);
+    setFilterList(sortList);
+  }
+
   return (
     <div className="trending-stocks">
       <div className="stock-title">
@@ -181,69 +268,85 @@ const TrendingStocks = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  {/* Displaying the Open Header for the Column if the checked value of the checkbox is true */}
-                  {isCheckedOpen && (
-                    <th>
-                      <div className="table-heading">
-                        <h4>Open</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-
-                  {/* Displaying the High Header for the Column if the checked value of checkbox is true  */}
-                  {isCheckedHigh && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>High</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-
-                  {/* Displaying the Low Header for the Column if the checked value of the check box is true */}
-                  {isCheckedLow && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Low</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-
-                  {/* Displaying the Close Header for the Column if the checked value of the check box is true */}
-                  {isCheckedClose && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Close</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                        />
-                      </div>
-                    </th>
-                  )}
+                  <th>
+                    <div className="table-heading">
+                      <h4>Name</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortName();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Open</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortOpen();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>High</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortHigh();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Low</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortLow();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Close</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortClose();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -282,7 +385,21 @@ const TrendingStocks = () => {
           <table>
             <thead>
               <tr>
-                <th>Name</th>
+                <th>
+                  <div className="table-heading">
+                    <h4>Name</h4>
+                    <img
+                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                      width="20px"
+                      height="20px"
+                      alt="sort icon"
+                      onClick={() => {
+                        handleSortName();
+                      }}
+                      className="sort-icon"
+                    />
+                  </div>
+                </th>
                 <th>
                   {" "}
                   <div className="table-heading">
@@ -292,6 +409,10 @@ const TrendingStocks = () => {
                       width="20px"
                       height="20px"
                       alt="sort icon"
+                      onClick={() => {
+                        handleSortOpen();
+                      }}
+                      className="sort-icon"
                     />
                   </div>
                 </th>
@@ -304,6 +425,10 @@ const TrendingStocks = () => {
                       width="20px"
                       height="20px"
                       alt="sort icon"
+                      onClick={() => {
+                        handleSortHigh();
+                      }}
+                      className="sort-icon"
                     />
                   </div>
                 </th>
@@ -316,6 +441,10 @@ const TrendingStocks = () => {
                       width="20px"
                       height="20px"
                       alt="sort icon"
+                      onClick={() => {
+                        handleSortLow();
+                      }}
+                      className="sort-icon"
                     />
                   </div>
                 </th>
@@ -328,6 +457,10 @@ const TrendingStocks = () => {
                       width="20px"
                       height="20px"
                       alt="sort icon"
+                      onClick={() => {
+                        handleSortClose();
+                      }}
+                      className="sort-icon"
                     />
                   </div>
                 </th>
