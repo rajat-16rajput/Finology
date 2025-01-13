@@ -233,6 +233,7 @@ const TrendingStocks = () => {
     }
     setSequence(!sequence);
     setSearchList(sortList);
+    setFilterList(sortList);
   }
 
   function handleSortName() {
