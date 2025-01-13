@@ -105,6 +105,8 @@ const TrendingStocks = () => {
 
   //Toggling the filter Menu
   function ToggleFilterMenuVisibility() {
+    setMinRange(0);
+    setMaxRange(Infinity);
     setShowFilterMenu(!showFilterMenu);
     setSearchText("");
     console.log("fILTER BTN CLICKED");
