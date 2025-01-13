@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { SearchBarVisibilityContext, SearchContext } from "../App";
 const Header = () => {
   const { showSearchbar } = useContext(SearchBarVisibilityContext);
-  const { setSearchText } = useContext(SearchContext);
+  const { searchText, setSearchText } = useContext(SearchContext);
   const [input, setInput] = useState("");
 
   function handleSearch() {
@@ -28,7 +28,7 @@ const Header = () => {
             type="text"
             placeholder={`Search in Trending Stocks of India`}
             className="search-bar"
-            value={input}
+            value={searchText}
             onChange={(e) => {
               handleInput(e);
             }}

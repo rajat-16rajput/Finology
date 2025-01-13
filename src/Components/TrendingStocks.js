@@ -5,7 +5,7 @@ const TrendingStocks = () => {
   //Global variables
 
   //Global Variable searchText to filter the table based on the input typed in the searchbox
-  const { searchText } = useContext(SearchContext);
+  const { searchText, setSearchText } = useContext(SearchContext);
   console.log(searchText);
 
   //Global function to set the visibility of the searchBar
@@ -19,17 +19,16 @@ const TrendingStocks = () => {
 
   // Storing the data into the array variables
   const [stockApiData, setStockApiData] = useState([]);
-  const [displayList, setDisplayList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
+  const [originalFilterList, setOriginalFilterList] = useState([]);
   const [searchList, setSearchList] = useState([]);
 
   // To toggle the visibility of the filter menu
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   //Handling range of advanced filters
-  const [minRange, setMinRange] = useState(0);
+  const [minRange, setMinRange] = useState(-Infinity);
   const [maxRange, setMaxRange] = useState(Infinity);
-
-  const [isSearchTextValid, setIsSearchTextValid] = useState(true);
 
   //Fetching the data from the api and setting the StockApiData and FilterList.
   // I am rendering the table from the data present in the FilterList.
@@ -38,10 +37,12 @@ const TrendingStocks = () => {
     const res = await fetch(STOCK_API);
     const data = await res.json();
     setStockApiData(data);
-    setDisplayList(data);
+    setOriginalFilterList(data);
+    setFilterList(data);
     setSearchList(data);
   }
 
+  //useEffect to fetch and render data
   useEffect(() => {
     //Calling the fetchStockApiData() on the initial render to fetch the data from the API.
     fetchStockApiData();
@@ -52,21 +53,38 @@ const TrendingStocks = () => {
   }, []);
 
   function filterSearchList() {
-    //Filtering the list based on the searchText value.
-    let searchListArray = displayList.filter((element) => {
+    //Filtering the Search list (Outer) based on the searchText value.
+    let searchListArray = stockApiData.filter((element) => {
+      return element?.name.toLowerCase()?.includes(searchText.toLowerCase());
+    });
+    //Setting the searchListArray variable with the filtered Data in order to render the latest results.
+    setSearchList(searchListArray);
+  }
+
+  function filterFilterList() {
+    let filterListArray = originalFilterList.filter((element) => {
       return element?.name.toLowerCase()?.includes(searchText.toLowerCase());
     });
 
-    //Setting the FilteredList variable with the filtered Data in order to render the latest results.
-    setDisplayList(searchListArray);
+    setFilterList(filterListArray);
   }
 
   //Updating the filterSearchList whenever the searchText is Changed. Used DEBOUNCING
   useEffect(() => {
-    if (searchText === "") {
-      setDisplayList(stockApiData);
+    if (showFilterMenu) {
+      if (searchText === "") {
+        setFilterList(originalFilterList);
+      }
+      if (searchText !== "") {
+        filterFilterList();
+      }
     }
 
+    //Code for the search list (OUTER)
+    if (searchText === "") {
+      setSearchList(stockApiData);
+    }
+    //Searching in the Search (outer list)
     if (searchText !== "") {
       let timer = setTimeout(() => {
         filterSearchList();
@@ -76,18 +94,26 @@ const TrendingStocks = () => {
         clearInterval(timer);
       };
     }
+
+    //Code for the filter list (INNER)
   }, [searchText]);
 
   //Toggling the filter Menu
   function ToggleFilterMenuVisibility() {
     setShowFilterMenu(!showFilterMenu);
+    setSearchText("");
+    console.log("fILTER BTN CLICKED");
+    setSearchList(stockApiData);
+    setOriginalFilterList(stockApiData);
+    setFilterList(stockApiData);
   }
 
   //Restoring Defaults
   function ResetFilters() {
     setMaxRange(Infinity);
     setMinRange(0);
-    setDisplayList(stockApiData);
+    setOriginalFilterList(stockApiData);
+    setFilterList(stockApiData);
     setIsCheckedOpen(true);
     setIsCheckedClose(true);
     setIsCheckedHigh(true);
@@ -110,13 +136,6 @@ const TrendingStocks = () => {
     setIsCheckedLow(!isCheckedLow);
   }
 
-  // function sortList() {
-  //   sortedArray.sort((a, b) => {
-  //     return +a.open - +b.open;
-  //   });
-  //   setFilteredList(sortedArray);
-  // }
-
   function handleMaxChange(e) {
     setMaxRange(e.target.value);
   }
@@ -126,6 +145,7 @@ const TrendingStocks = () => {
 
   useEffect(() => {
     filterTableBasedOnRange();
+    setSearchText("");
   }, [minRange, maxRange]);
 
   function filterTableBasedOnRange() {
@@ -137,7 +157,8 @@ const TrendingStocks = () => {
     let filteredTable = stockApiData.filter((element) => {
       return element.open >= minRange && element.open <= maxRange;
     });
-    setDisplayList(filteredTable);
+    setOriginalFilterList(filteredTable);
+    setFilterList(filteredTable);
   }
 
   return (
@@ -155,7 +176,7 @@ const TrendingStocks = () => {
       </div>
       <div className="stock-body">
         {showFilterMenu ? (
-          displayList.length != 0 ? (
+          filterList.length !== 0 ? (
             //Rendering the Table from the FilteredList with the Filter Menu being displayed
             <table>
               <thead>
@@ -226,7 +247,7 @@ const TrendingStocks = () => {
                 </tr>
               </thead>
               <tbody>
-                {displayList.map((element) => {
+                {filterList.map((element) => {
                   return (
                     <tr key={element.name}>
                       <td>
@@ -246,9 +267,17 @@ const TrendingStocks = () => {
               </tbody>
             </table>
           ) : (
-            <h1>No Data</h1>
+            <div className="search-error">
+              <img
+                src="https://www.svgrepo.com/show/278414/error.svg"
+                alt="error"
+                width="200px"
+                height="200px"
+              />
+              <h1>No Data Found</h1>
+            </div>
           )
-        ) : (
+        ) : searchList.length !== 0 ? (
           //Rendering the Table from the FilteredList when Filter menu is disabled
           <table>
             <thead>
@@ -305,7 +334,7 @@ const TrendingStocks = () => {
               </tr>
             </thead>
             <tbody>
-              {displayList.map((element) => {
+              {searchList.map((element) => {
                 return (
                   <tr key={element.name}>
                     <td>
@@ -320,6 +349,16 @@ const TrendingStocks = () => {
               })}
             </tbody>
           </table>
+        ) : (
+          <div className="search-error">
+            <img
+              src="https://www.svgrepo.com/show/278414/error.svg"
+              alt="error"
+              width="200px"
+              height="200px"
+            />
+            <h1>No Data Found</h1>
+          </div>
         )}
         {showFilterMenu && (
           <div className="filter-menu">
