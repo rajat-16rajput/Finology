@@ -188,6 +188,11 @@ li {
   font-weight: 400;
 }
 
+.reset-defaults:hover {
+  background-color: rgb(105, 202, 105);
+  font-weight: 400;
+}
+
 .search-error {
   width: 80%;
   margin: 20px;
