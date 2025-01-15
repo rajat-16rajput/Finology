@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { STOCK_API } from "../Utils/API";
 import { SearchContext, SearchBarVisibilityContext } from "../App";
+import TableError from "./TableError";
+import ExportMenu from "./ExportMenu";
 const TrendingStocks = () => {
   //Global variables
 
@@ -28,6 +30,9 @@ const TrendingStocks = () => {
 
   //Toggling asc desc sequence
   const [sequence, setSequence] = useState(false);
+
+  //Toggling Export Menu
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   //Handling range of advanced filters
   const [minRange, setMinRange] = useState(-Infinity);
@@ -251,11 +256,23 @@ const TrendingStocks = () => {
     setFilterList(stockApiData);
     setShowFilterMenu(false);
   }
+  function handleExport() {
+    console.log("Export Btn Clicked");
+    setShowExportMenu(!showExportMenu);
+  }
   return (
     <div className="trending-stocks">
       <div className="stock-title">
         <h3>Trending Stocks of India</h3>
         <div>
+          <button
+            className="export-btn"
+            onClick={() => {
+              handleExport();
+            }}
+          >
+            <h3>Export Table</h3>
+          </button>
           <button
             className="reset-defaults"
             onClick={() => {
@@ -278,6 +295,138 @@ const TrendingStocks = () => {
         {showFilterMenu ? (
           filterList.length !== 0 ? (
             //Rendering the Table from the FilteredList with the Filter Menu being displayed
+            <>
+              {showExportMenu && (
+                <ExportMenu
+                  showExportMenu={showExportMenu}
+                  setShowExportMenu={setShowExportMenu}
+                />
+              )}
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div className="table-heading">
+                        <h4>Name</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortName();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                    {isCheckedOpen && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Open</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortOpen();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedHigh && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>High</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortHigh();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedLow && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Low</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortLow();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedClose && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Close</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortClose();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterList.map((element) => {
+                    return (
+                      <tr key={element.name}>
+                        <td>
+                          <strong>{element.open ? element.name : null}</strong>
+                        </td>
+                        {/* Displaying the Open Column if the checked value of the checkbox is true */}
+                        {isCheckedOpen && <td>{element.open}</td>}
+                        {/* Displaying the High Column if the checked value of the checkbox is true */}
+                        {isCheckedHigh && <td> {element.high}</td>}
+                        {/* Displaying the Low Column if the checked value of the checkbox is true */}
+                        {isCheckedLow && <td>{element.low}</td>}
+                        {/* Displaying the Close Column if the checked value of the checkbox is true */}
+                        {isCheckedClose && <td> {element.close}</td>}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <TableError />
+          )
+        ) : searchList.length !== 0 ? (
+          //Rendering the Table from the FilteredList when Filter menu is disabled
+          <>
+            {showExportMenu && (
+              <ExportMenu
+                showExportMenu={showExportMenu}
+                setShowExportMenu={setShowExportMenu}
+              />
+            )}
             <table>
               <thead>
                 <tr>
@@ -296,223 +445,91 @@ const TrendingStocks = () => {
                       />
                     </div>
                   </th>
-                  {isCheckedOpen && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Open</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortOpen();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedHigh && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>High</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortHigh();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedLow && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Low</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortLow();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedClose && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Close</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortClose();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Open</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortOpen();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>High</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortHigh();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Low</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortLow();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Close</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortClose();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filterList.map((element) => {
+                {searchList.map((element) => {
                   return (
                     <tr key={element.name}>
                       <td>
-                        <strong>{element.open ? element.name : null}</strong>
+                        <strong>{element.name}</strong>
                       </td>
-                      {/* Displaying the Open Column if the checked value of the checkbox is true */}
-                      {isCheckedOpen && <td>{element.open}</td>}
-                      {/* Displaying the High Column if the checked value of the checkbox is true */}
-                      {isCheckedHigh && <td> {element.high}</td>}
-                      {/* Displaying the Low Column if the checked value of the checkbox is true */}
-                      {isCheckedLow && <td>{element.low}</td>}
-                      {/* Displaying the Close Column if the checked value of the checkbox is true */}
-                      {isCheckedClose && <td> {element.close}</td>}
+                      <td>{element.open}</td>
+                      <td>{element.high}</td>
+                      <td>{element.low}</td>
+                      <td>{element.close}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-          ) : (
-            <div className="search-error">
-              <img
-                src="https://www.svgrepo.com/show/278414/error.svg"
-                alt="error"
-                width="200px"
-                height="200px"
-              />
-              <h1>No Data Found</h1>
-            </div>
-          )
-        ) : searchList.length !== 0 ? (
-          //Rendering the Table from the FilteredList when Filter menu is disabled
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <div className="table-heading">
-                    <h4>Name</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortName();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Open</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortOpen();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>High</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortHigh();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Low</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortLow();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Close</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortClose();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {searchList.map((element) => {
-                return (
-                  <tr key={element.name}>
-                    <td>
-                      <strong>{element.name}</strong>
-                    </td>
-                    <td>{element.open}</td>
-                    <td>{element.high}</td>
-                    <td>{element.low}</td>
-                    <td>{element.close}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          </>
         ) : (
-          <div className="search-error">
-            <img
-              src="https://www.svgrepo.com/show/278414/error.svg"
-              alt="error"
-              width="200px"
-              height="200px"
-            />
-            <h1>No Data Found</h1>
-          </div>
+          <TableError />
         )}
         {showFilterMenu && (
           <div className="filter-menu">

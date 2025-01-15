@@ -183,6 +183,48 @@ li {
   box-shadow: black;
 }
 
+.export-btn {
+  padding: 5px;
+  width: 110px;
+  margin-right: 10px;
+  color: white;
+  background-color: rgb(195, 43, 43);
+  font: large;
+  cursor: pointer;
+  border: none;
+  box-shadow: black;
+}
+.export-menu {
+  height: 100px;
+  width: 600px;
+  padding: 40px;
+  border: solid black;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 200px;
+  left: 400px;
+  text-align: center;
+}
+.exportMenu-option-buttons {
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+.exp-btn {
+  padding: 5px;
+  background-color: rgb(234, 119, 119);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.exp-btn:hover {
+  background-color: rgb(255, 155, 155);
+  border-radius: 20px;
+}
+
 .filter-btn:hover {
   background-color: rgb(105, 202, 105);
   font-weight: 400;
@@ -192,7 +234,10 @@ li {
   background-color: rgb(105, 202, 105);
   font-weight: 400;
 }
-
+.export-btn:hover {
+  background-color: rgb(245, 56, 56);
+  font-weight: 400;
+}
 .search-error {
   width: 80%;
   margin: 20px;
