@@ -1,28 +1,36 @@
 import React from "react";
 
-const ExportMenu = ({ showExportMenu, setShowExportMenu }) => {
-  function handleCancel() {
-    setShowExportMenu(!showExportMenu);
+const ExportMenu = ({ convertToCSV, handleDownloadXLSX }) => {
+  function exportToCSV() {
+    console.log("Exporting to CSV...");
+    convertToCSV();
+  }
+  function exportToXLSX() {
+    // Corrected function name
+    console.log("Exporting to XLSX...");
+    handleDownloadXLSX();
   }
   return (
     <div className="export-menu">
-      <h4>
-        Please Select the format in which the table data should be exported
-      </h4>
-
-      <div className="exportMenu-option-buttons">
-        <button className="exp-btn">CSV</button>
-
-        <button className="exp-btn">XLSS</button>
-        <button
-          className="exp-btn"
+      <ul className="export-list">
+        <li
           onClick={() => {
-            handleCancel();
+            exportToCSV();
           }}
+          className="exp-opt"
         >
-          Cancel
-        </button>
-      </div>
+          CSV
+        </li>
+        <hr></hr>
+        <li
+          onClick={() => {
+            exportToXLSX(); // Corrected function call
+          }}
+          className="exp-opt"
+        >
+          XLSX
+        </li>
+      </ul>
     </div>
   );
 };

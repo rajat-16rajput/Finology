@@ -171,18 +171,6 @@ li {
   box-shadow: black;
 }
 
-.reset-defaults {
-  padding: 5px;
-  width: 60px;
-  margin-right: 10px;
-  color: white;
-  background-color: rgb(68, 141, 68);
-  font: large;
-  cursor: pointer;
-  border: none;
-  box-shadow: black;
-}
-
 .export-btn {
   padding: 5px;
   width: 110px;
@@ -195,28 +183,31 @@ li {
   box-shadow: black;
 }
 .export-menu {
-  height: 100px;
-  width: 600px;
-  padding: 40px;
+  height: 53px;
+  width: 107px;
   border: solid black;
+
   background-color: beige;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 200px;
-  left: 400px;
+  top: 122px;
+  right: 102px;
   text-align: center;
 }
-.exportMenu-option-buttons {
-  margin: 20px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-around;
+
+.export-list {
+  background-color: rgb(244, 138, 138);
+  cursor: pointer;
+  margin: 2px;
+  padding: 2px;
+}
+.exp-opt:hover {
+  background-color: rgb(236, 106, 106);
 }
 .exp-btn {
-  padding: 5px;
   background-color: rgb(234, 119, 119);
-  border-radius: 20px;
+  border: 1px solid black;
   cursor: pointer;
 }
 
@@ -230,10 +221,6 @@ li {
   font-weight: 400;
 }
 
-.reset-defaults:hover {
-  background-color: rgb(105, 202, 105);
-  font-weight: 400;
-}
 .export-btn:hover {
   background-color: rgb(245, 56, 56);
   font-weight: 400;

@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { STOCK_API } from "../Utils/API";
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { SearchContext, SearchBarVisibilityContext } from "../App";
 import TableError from "./TableError";
 import ExportMenu from "./ExportMenu";
+
 const TrendingStocks = () => {
   //Global variables
 
@@ -24,12 +27,13 @@ const TrendingStocks = () => {
   const [filterList, setFilterList] = useState([]);
   const [originalFilterList, setOriginalFilterList] = useState([]);
   const [searchList, setSearchList] = useState([]);
+  console.log("searchList : ", searchList);
 
   // To toggle the visibility of the filter menu
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   //Toggling asc desc sequence
-  const [sequence, setSequence] = useState(false);
+  const [sequence, setSequence] = useState("original");
 
   //Toggling Export Menu
   const [showExportMenu, setShowExportMenu] = useState(false);
@@ -180,86 +184,180 @@ const TrendingStocks = () => {
   }
 
   function handleSortOpen() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.open - b.open;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.open - a.open;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortClose() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.close - b.close;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.close - a.close;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortHigh() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.high - b.high;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.high - a.high;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortLow() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.low - b.low;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.low - a.low;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortName() {
-    console.log("Sort name called");
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+        break;
 
-    if (sequence === false) {
-      sortList.sort((a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-      );
-    } else {
-      sortList.sort(function (a, b) {
-        return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
-      });
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
-  function resetDefault() {
-    setSearchList(stockApiData);
-    setFilterList(stockApiData);
-    setShowFilterMenu(false);
-  }
+
   function handleExport() {
     console.log("Export Btn Clicked");
     setShowExportMenu(!showExportMenu);
   }
+
+  function convertToCSV() {
+    console.log("Converting to csv...");
+    if (!showFilterMenu) {
+      const csv = Papa.unparse(searchList);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "table-data.csv";
+      link.click();
+      console.log(csv);
+    } else {
+      const csv = Papa.unparse(filterList);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "table-data.csv";
+      link.click();
+      console.log(csv);
+    }
+  }
+
+  function handleDownloadXLSX() {
+    if (!showFilterMenu) {
+      const ws = XLSX.utils.json_to_sheet(searchList);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+      // Write the file
+      XLSX.writeFile(wb, "table-data.xlsx");
+    } else {
+      const ws = XLSX.utils.json_to_sheet(filterList);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+      // Write the file
+      XLSX.writeFile(wb, "table-data.xlsx");
+    }
+  }
+
   return (
     <div className="trending-stocks">
       <div className="stock-title">
@@ -273,14 +371,7 @@ const TrendingStocks = () => {
           >
             <h3>Export Table</h3>
           </button>
-          <button
-            className="reset-defaults"
-            onClick={() => {
-              resetDefault();
-            }}
-          >
-            <h3>Reset</h3>
-          </button>
+
           <button
             className="filter-btn"
             onClick={() => {
@@ -298,8 +389,8 @@ const TrendingStocks = () => {
             <>
               {showExportMenu && (
                 <ExportMenu
-                  showExportMenu={showExportMenu}
-                  setShowExportMenu={setShowExportMenu}
+                  convertToCSV={convertToCSV}
+                  handleDownloadXLSX={handleDownloadXLSX}
                 />
               )}
               <table>
@@ -425,6 +516,8 @@ const TrendingStocks = () => {
               <ExportMenu
                 showExportMenu={showExportMenu}
                 setShowExportMenu={setShowExportMenu}
+                convertToCSV={convertToCSV}
+                handleDownloadXLSX={handleDownloadXLSX}
               />
             )}
             <table>
