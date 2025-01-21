@@ -171,16 +171,49 @@ li {
   box-shadow: black;
 }
 
-.reset-defaults {
+.export-btn {
   padding: 5px;
-  width: 60px;
+  width: 110px;
   margin-right: 10px;
   color: white;
-  background-color: rgb(68, 141, 68);
+  background-color: rgb(195, 43, 43);
   font: large;
   cursor: pointer;
   border: none;
   box-shadow: black;
+}
+.export-menu {
+  height: 53px;
+  width: 107px;
+  border: solid black;
+
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 122px;
+  right: 102px;
+  text-align: center;
+}
+
+.export-list {
+  background-color: rgb(244, 138, 138);
+  cursor: pointer;
+  margin: 2px;
+  padding: 2px;
+}
+.exp-opt:hover {
+  background-color: rgb(236, 106, 106);
+}
+.exp-btn {
+  background-color: rgb(234, 119, 119);
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.exp-btn:hover {
+  background-color: rgb(255, 155, 155);
+  border-radius: 20px;
 }
 
 .filter-btn:hover {
@@ -188,11 +221,10 @@ li {
   font-weight: 400;
 }
 
-.reset-defaults:hover {
-  background-color: rgb(105, 202, 105);
+.export-btn:hover {
+  background-color: rgb(245, 56, 56);
   font-weight: 400;
 }
-
 .search-error {
   width: 80%;
   margin: 20px;
@@ -282,4 +314,50 @@ tbody td {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.Date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.date-text {
+  padding: 5px;
+  margin: 5px;
+  width: 100px;
+  text-align: center;
+  font: serif;
+  font: bold;
+}
+.btns {
+  display: flex;
+  margin-right: 3px;
+  padding-right: 5px;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.tick {
+  margin: 5px;
+  padding: 5px;
+}
+.cross {
+  margin: 5px;
+  padding: 5px;
+}
+.edit-date-btn {
+  margin: 5px;
+  padding: 5px;
+  width: 40px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: rgb(103, 203, 103);
+  cursor: pointer;
+}
+.edit-date-btn:hover {
+  background-color: rgb(134, 236, 134);
+  font: large;
+  text-emphasis-color: Blue;
 }

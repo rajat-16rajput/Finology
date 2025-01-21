@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { STOCK_API } from "../Utils/API";
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { SearchContext, SearchBarVisibilityContext } from "../App";
+import TableError from "./TableError";
+import ExportMenu from "./ExportMenu";
+
 const TrendingStocks = () => {
   //Global variables
 
@@ -22,12 +27,16 @@ const TrendingStocks = () => {
   const [filterList, setFilterList] = useState([]);
   const [originalFilterList, setOriginalFilterList] = useState([]);
   const [searchList, setSearchList] = useState([]);
+  console.log("searchList : ", searchList);
 
   // To toggle the visibility of the filter menu
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   //Toggling asc desc sequence
-  const [sequence, setSequence] = useState(false);
+  const [sequence, setSequence] = useState("original");
+
+  //Toggling Export Menu
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   //Handling range of advanced filters
   const [minRange, setMinRange] = useState(-Infinity);
@@ -175,95 +184,194 @@ const TrendingStocks = () => {
   }
 
   function handleSortOpen() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.open - b.open;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.open - a.open;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortClose() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.close - b.close;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.close - a.close;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortHigh() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.high - b.high;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.high - a.high;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortLow() {
-    if (sequence === false) {
-      sortList.sort(function (a, b) {
-        return a.low - b.low;
-      });
-    } else {
-      sortList.sort(function (a, b) {
-        return b.low - a.low;
-      });
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort(function (a, b) {
+          return a.open - b.open;
+        });
+        break;
+
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.open - a.open;
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
   function handleSortName() {
-    console.log("Sort name called");
+    switch (sequence) {
+      case "original":
+        setSequence("asc");
+        sortList.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+        break;
 
-    if (sequence === false) {
-      sortList.sort((a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-      );
-    } else {
-      sortList.sort(function (a, b) {
-        return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
-      });
+      case "asc":
+        setSequence("dsc");
+        sortList.sort(function (a, b) {
+          return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+        });
+        break;
+
+      case "dsc":
+        setSequence("original");
+        sortList = stockApiData;
+        break;
+      default:
+        break;
     }
-    setSequence(!sequence);
     setSearchList(sortList);
     setFilterList(sortList);
   }
-  function resetDefault() {
-    setSearchList(stockApiData);
-    setFilterList(stockApiData);
-    setShowFilterMenu(false);
+
+  function handleExport() {
+    console.log("Export Btn Clicked");
+    setShowExportMenu(!showExportMenu);
   }
+
+  function convertToCSV() {
+    console.log("Converting to csv...");
+    if (!showFilterMenu) {
+      const csv = Papa.unparse(searchList);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "table-data.csv";
+      link.click();
+      console.log(csv);
+    } else {
+      const csv = Papa.unparse(filterList);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "table-data.csv";
+      link.click();
+      console.log(csv);
+    }
+  }
+
+  function handleDownloadXLSX() {
+    if (!showFilterMenu) {
+      const ws = XLSX.utils.json_to_sheet(searchList);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+      // Write the file
+      XLSX.writeFile(wb, "table-data.xlsx");
+    } else {
+      const ws = XLSX.utils.json_to_sheet(filterList);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+      // Write the file
+      XLSX.writeFile(wb, "table-data.xlsx");
+    }
+  }
+
   return (
     <div className="trending-stocks">
       <div className="stock-title">
         <h3>Trending Stocks of India</h3>
         <div>
           <button
-            className="reset-defaults"
+            className="export-btn"
             onClick={() => {
-              resetDefault();
+              handleExport();
             }}
           >
-            <h3>Reset</h3>
+            <h3>Export Table</h3>
           </button>
+
           <button
             className="filter-btn"
             onClick={() => {
@@ -278,6 +386,140 @@ const TrendingStocks = () => {
         {showFilterMenu ? (
           filterList.length !== 0 ? (
             //Rendering the Table from the FilteredList with the Filter Menu being displayed
+            <>
+              {showExportMenu && (
+                <ExportMenu
+                  convertToCSV={convertToCSV}
+                  handleDownloadXLSX={handleDownloadXLSX}
+                />
+              )}
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div className="table-heading">
+                        <h4>Name</h4>
+                        <img
+                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                          width="20px"
+                          height="20px"
+                          alt="sort icon"
+                          onClick={() => {
+                            handleSortName();
+                          }}
+                          className="sort-icon"
+                        />
+                      </div>
+                    </th>
+                    {isCheckedOpen && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Open</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortOpen();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedHigh && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>High</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortHigh();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedLow && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Low</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortLow();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                    {isCheckedClose && (
+                      <th>
+                        {" "}
+                        <div className="table-heading">
+                          <h4>Close</h4>
+                          <img
+                            src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                            width="20px"
+                            height="20px"
+                            alt="sort icon"
+                            onClick={() => {
+                              handleSortClose();
+                            }}
+                            className="sort-icon"
+                          />
+                        </div>
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterList.map((element) => {
+                    return (
+                      <tr key={element.name}>
+                        <td>
+                          <strong>{element.open ? element.name : null}</strong>
+                        </td>
+                        {/* Displaying the Open Column if the checked value of the checkbox is true */}
+                        {isCheckedOpen && <td>{element.open}</td>}
+                        {/* Displaying the High Column if the checked value of the checkbox is true */}
+                        {isCheckedHigh && <td> {element.high}</td>}
+                        {/* Displaying the Low Column if the checked value of the checkbox is true */}
+                        {isCheckedLow && <td>{element.low}</td>}
+                        {/* Displaying the Close Column if the checked value of the checkbox is true */}
+                        {isCheckedClose && <td> {element.close}</td>}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <TableError />
+          )
+        ) : searchList.length !== 0 ? (
+          //Rendering the Table from the FilteredList when Filter menu is disabled
+          <>
+            {showExportMenu && (
+              <ExportMenu
+                showExportMenu={showExportMenu}
+                setShowExportMenu={setShowExportMenu}
+                convertToCSV={convertToCSV}
+                handleDownloadXLSX={handleDownloadXLSX}
+              />
+            )}
             <table>
               <thead>
                 <tr>
@@ -296,223 +538,91 @@ const TrendingStocks = () => {
                       />
                     </div>
                   </th>
-                  {isCheckedOpen && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Open</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortOpen();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedHigh && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>High</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortHigh();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedLow && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Low</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortLow();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
-                  {isCheckedClose && (
-                    <th>
-                      {" "}
-                      <div className="table-heading">
-                        <h4>Close</h4>
-                        <img
-                          src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                          width="20px"
-                          height="20px"
-                          alt="sort icon"
-                          onClick={() => {
-                            handleSortClose();
-                          }}
-                          className="sort-icon"
-                        />
-                      </div>
-                    </th>
-                  )}
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Open</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortOpen();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>High</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortHigh();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Low</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortLow();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
+                  <th>
+                    {" "}
+                    <div className="table-heading">
+                      <h4>Close</h4>
+                      <img
+                        src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
+                        width="20px"
+                        height="20px"
+                        alt="sort icon"
+                        onClick={() => {
+                          handleSortClose();
+                        }}
+                        className="sort-icon"
+                      />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filterList.map((element) => {
+                {searchList.map((element) => {
                   return (
                     <tr key={element.name}>
                       <td>
-                        <strong>{element.open ? element.name : null}</strong>
+                        <strong>{element.name}</strong>
                       </td>
-                      {/* Displaying the Open Column if the checked value of the checkbox is true */}
-                      {isCheckedOpen && <td>{element.open}</td>}
-                      {/* Displaying the High Column if the checked value of the checkbox is true */}
-                      {isCheckedHigh && <td> {element.high}</td>}
-                      {/* Displaying the Low Column if the checked value of the checkbox is true */}
-                      {isCheckedLow && <td>{element.low}</td>}
-                      {/* Displaying the Close Column if the checked value of the checkbox is true */}
-                      {isCheckedClose && <td> {element.close}</td>}
+                      <td>{element.open}</td>
+                      <td>{element.high}</td>
+                      <td>{element.low}</td>
+                      <td>{element.close}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-          ) : (
-            <div className="search-error">
-              <img
-                src="https://www.svgrepo.com/show/278414/error.svg"
-                alt="error"
-                width="200px"
-                height="200px"
-              />
-              <h1>No Data Found</h1>
-            </div>
-          )
-        ) : searchList.length !== 0 ? (
-          //Rendering the Table from the FilteredList when Filter menu is disabled
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <div className="table-heading">
-                    <h4>Name</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortName();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Open</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortOpen();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>High</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortHigh();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Low</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortLow();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-                <th>
-                  {" "}
-                  <div className="table-heading">
-                    <h4>Close</h4>
-                    <img
-                      src="https://www.svgrepo.com/show/527495/sort-vertical.svg"
-                      width="20px"
-                      height="20px"
-                      alt="sort icon"
-                      onClick={() => {
-                        handleSortClose();
-                      }}
-                      className="sort-icon"
-                    />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {searchList.map((element) => {
-                return (
-                  <tr key={element.name}>
-                    <td>
-                      <strong>{element.name}</strong>
-                    </td>
-                    <td>{element.open}</td>
-                    <td>{element.high}</td>
-                    <td>{element.low}</td>
-                    <td>{element.close}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          </>
         ) : (
-          <div className="search-error">
-            <img
-              src="https://www.svgrepo.com/show/278414/error.svg"
-              alt="error"
-              width="200px"
-              height="200px"
-            />
-            <h1>No Data Found</h1>
-          </div>
+          <TableError />
         )}
         {showFilterMenu && (
           <div className="filter-menu">
