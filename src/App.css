@@ -315,3 +315,49 @@ tbody td {
   justify-content: center;
   align-items: center;
 }
+
+.Date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.date-text {
+  padding: 5px;
+  margin: 5px;
+  width: 100px;
+  text-align: center;
+  font: serif;
+  font: bold;
+}
+.btns {
+  display: flex;
+  margin-right: 3px;
+  padding-right: 5px;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.tick {
+  margin: 5px;
+  padding: 5px;
+}
+.cross {
+  margin: 5px;
+  padding: 5px;
+}
+.edit-date-btn {
+  margin: 5px;
+  padding: 5px;
+  width: 40px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: rgb(103, 203, 103);
+  cursor: pointer;
+}
+.edit-date-btn:hover {
+  background-color: rgb(134, 236, 134);
+  font: large;
+  text-emphasis-color: Blue;
+}
