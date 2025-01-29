@@ -1,88 +1,84 @@
-import React from "react";
+import Profile from "./Profile";
+import MutualFund from "./MutualFund";
+import MyStocks from "./MyStocks";
+import DatePicker from "./DatePicker";
 import { useState } from "react";
+
 const Dashboard = () => {
-  const [date, setDate] = useState("yyyy-mm-dd");
-  const [displayDate, setDisplayDate] = useState(date);
-  const [showDate, setShowDate] = useState(false);
-  const [previousDate, setPreviousDate] = useState("yyyy-mm-dd");
-  const [showEditBtn, setShowEditBtn] = useState(showDate);
-  function handleDate(val) {
-    console.log("handleDate Called");
-    setDate(val);
+  const [data, setData] = useState({
+    name: "Rajat",
+    age: 24,
+    email: "rajat@gmail.com",
+    sip: [],
+  });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabs = [
+    { name: "Profile", component: Profile },
+    { name: "MutualFund", component: MutualFund },
+    { name: "MyStocks", component: MyStocks },
+  ];
+
+  function handleTabChange(index) {
+    console.log(" handleTabChange()");
+    setActiveIndex(index);
+  }
+  function handleNext() {
+    setActiveIndex(activeIndex + 1);
   }
 
-  function handleTick() {
-    console.log("handle Tick called");
-    if (date === "yyyy-mm-dd") {
-      alert("Please select a date");
-    } else if (!showDate) {
-      setShowEditBtn(true);
-      console.log(date.split("-").reverse().join("-"));
-      setShowDate(true);
-      setPreviousDate(date);
-      setDisplayDate(date);
-    }
+  function handlePrevious() {
+    setActiveIndex(activeIndex - 1);
   }
-
-  function handleCross() {
-    console.log("handleCross called");
-    if (date === "yyyy-mm-dd") {
-      alert("Please select a date");
-    } else if (!showDate) {
-      setShowEditBtn(true);
-      setShowDate(true);
-      setDisplayDate(previousDate);
-    }
-  }
+  const ActiveComponent = tabs[activeIndex].component;
   return (
-    <div className="dashboard">
-      <h1>Dashboard</h1>
-      <div className="Date">
-        {showDate ? (
-          <p className="date-text">
-            {displayDate.split("-").reverse().join("-")}
-          </p>
-        ) : (
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => {
-              const value = e.target.value;
-              handleDate(value);
-            }}
-          ></input>
-        )}
-        {showEditBtn ? (
-          <div
-            className="edit-date-btn"
-            onClick={() => {
-              console.log("Edit btn clicked");
-              setShowEditBtn(!showEditBtn);
-              setShowDate(false);
-            }}
-          >
-            Edit
-          </div>
-        ) : (
-          <div className="btns">
+    <div>
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <DatePicker />
+      </div>
+
+      <div className="dashboard-content">
+        <div className="dashboard-tabs">
+          {tabs.map((t, index) => (
             <div
-              className="tick"
+              className="tab-btn"
+              key={index}
               onClick={() => {
-                handleTick();
+                handleTabChange(index);
               }}
             >
-              ✓
+              {t.name}
             </div>
-            <div
-              className="cross"
-              onClick={() => {
-                handleCross();
-              }}
-            >
-              X
-            </div>
+          ))}
+        </div>
+        <div className="dashboard-page">
+          <ActiveComponent data={data} setData={setData} />
+          <div className="dashboard-btn-container">
+            {activeIndex > 0 && (
+              <button
+                onClick={() => {
+                  handlePrevious();
+                }}
+              >
+                Previous
+              </button>
+            )}
+            {activeIndex < tabs.length - 1 && (
+              <button
+                onClick={() => {
+                  handleNext();
+                }}
+              >
+                Next
+              </button>
+            )}
+            {activeIndex === tabs.length - 1 && <button>Submit</button>}
           </div>
-        )}
+        </div>
+        {/* <div>
+          <button>Previous</button>
+          <button>Next</button>
+        </div> */}
       </div>
     </div>
   );

@@ -55,7 +55,7 @@
 
 .main {
   display: flex;
-  height: 100%;
+  height: 85vh;
   background-color: rgb(164, 230, 164);
 }
 /* .sidebar {
@@ -126,9 +126,81 @@ li {
   height: 75vh;
   padding-left: 400px;
 }
-.dashboard {
-  height: 75vh;
-  padding-left: 400px;
+.dashboard-header {
+  display: flex;
+  justify-content: end;
+  padding: 10px;
+}
+.dashboard-content {
+  border: 1px solid black;
+  box-sizing: border-box;
+  margin: 5px;
+  padding: 5px;
+  height: 400px;
+  width: 1000px;
+}
+.dashboard-tabs {
+  display: flex;
+  box-sizing: border-box;
+}
+.dashboard-page {
+  border: 1px solid black;
+  margin: 2px;
+  box-sizing: border-box;
+  background-color: rgb(194, 248, 194);
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.dashboard-btn-container {
+  margin-bottom: 50px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 5px;
+  margin: 5px;
+  color: white;
+  background-color: black;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px;
+}
+.mututal-form {
+  padding: 5px;
+  margin: 5px;
+}
+.my-stocks {
+  margin: 10px;
+}
+
+.my-stock-list {
+  margin: 10px;
+}
+
+.tab-btn {
+  padding: 4px;
+  margin: 2px;
+  border: 1px solid black;
+
+  color: white;
+  background-color: rgb(68, 141, 68);
+  font: large;
+  cursor: pointer;
+
+  box-shadow: black;
+}
+
+.tab-btn:hover {
+  background-color: rgb(86, 161, 86);
 }
 .error {
   height: 75vh;
@@ -269,6 +341,7 @@ tbody td {
 
 .stock-body {
   display: flex;
+  height: 100%;
 }
 
 .filter-menu {
@@ -308,19 +381,22 @@ tbody td {
 #option {
   padding: 5px;
 }
-.footer {
+/* .footer {
   height: 10vh;
   background-color: rgb(207, 201, 201);
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .Date {
+  padding-left: 600px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  height: 50px;
+  width: 200px;
+  /* margin-top: 20px; */
 }
 .date-text {
   padding: 5px;
