@@ -18,7 +18,7 @@ const MyStocks = () => {
         {stockList.map((entry, index) => {
           return (
             <li key={index}>
-              {entry.name} {"x" + index + 1 * 2}
+              {entry.name} {"  x " + index + 1 * 2}
             </li>
           );
         })}

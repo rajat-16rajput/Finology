@@ -163,16 +163,27 @@ li {
 }
 
 button {
+  width: 100px;
   padding: 5px;
   margin: 5px;
   color: white;
+  box-shadow: black;
   background-color: black;
+}
+
+button:disabled {
+  color: gray;
+  background-color: white;
 }
 .profile-form {
   display: flex;
   flex-direction: column;
   padding: 10px;
   margin: 10px;
+}
+.error-msg {
+  color: red;
+  font-size: small;
 }
 .mututal-form {
   padding: 5px;
@@ -198,10 +209,16 @@ button {
 
   box-shadow: black;
 }
-
-.tab-btn:hover {
-  background-color: rgb(86, 161, 86);
+.active-tab {
+  background-color: rgb(230, 224, 224);
+  color: black;
+  box-sizing: border-box;
+  font-size: medium;
+  padding: 2px;
 }
+/* .tab-btn:hover {
+  background-color: rgb(86, 161, 86);
+} */
 .error {
   height: 75vh;
   align-items: center;

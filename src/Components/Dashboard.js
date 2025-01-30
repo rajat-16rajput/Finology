@@ -2,7 +2,7 @@ import Profile from "./Profile";
 import MutualFund from "./MutualFund";
 import MyStocks from "./MyStocks";
 import DatePicker from "./DatePicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const [data, setData] = useState({
@@ -11,9 +11,28 @@ const Dashboard = () => {
     email: "rajat@gmail.com",
     sip: [],
   });
+
   const [activeIndex, setActiveIndex] = useState(0);
+  const [error, setError] = useState({});
   const tabs = [
-    { name: "Profile", component: Profile },
+    {
+      name: "Profile",
+      component: Profile,
+      validate: () => {
+        const err = {};
+        if (!data.name) {
+          err.name = "Please Enter your name";
+        }
+        if (!data.age) {
+          err.age = "Please Enter your age";
+        }
+        if (!data.email) {
+          err.email = "Please Enter your email";
+        }
+        setError(err);
+        return err.name || err.age || err.email ? false : true;
+      },
+    },
     { name: "MutualFund", component: MutualFund },
     { name: "MyStocks", component: MyStocks },
   ];
@@ -40,19 +59,17 @@ const Dashboard = () => {
       <div className="dashboard-content">
         <div className="dashboard-tabs">
           {tabs.map((t, index) => (
-            <div
-              className="tab-btn"
-              key={index}
-              onClick={() => {
-                handleTabChange(index);
-              }}
-            >
-              {t.name}
+            <div className="tab-btn" key={index}>
+              {index === activeIndex ? (
+                <div className="active-tab">{t.name}</div>
+              ) : (
+                t.name
+              )}
             </div>
           ))}
         </div>
         <div className="dashboard-page">
-          <ActiveComponent data={data} setData={setData} />
+          <ActiveComponent data={data} setData={setData} error={error} />
           <div className="dashboard-btn-container">
             {activeIndex > 0 && (
               <button
@@ -68,6 +85,9 @@ const Dashboard = () => {
                 onClick={() => {
                   handleNext();
                 }}
+                disabled={
+                  !data.name || (data.age < 18 && data.age > 40) || !data.email
+                }
               >
                 Next
               </button>
@@ -75,10 +95,6 @@ const Dashboard = () => {
             {activeIndex === tabs.length - 1 && <button>Submit</button>}
           </div>
         </div>
-        {/* <div>
-          <button>Previous</button>
-          <button>Next</button>
-        </div> */}
       </div>
     </div>
   );
