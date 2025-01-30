@@ -16,6 +16,11 @@ const MutualFund = ({ data, setData }) => {
   }, [data.sip]);
   return (
     <div>
+      {data.sip.length < 1 && (
+        <div className="error-msg">
+          Please select atleast one type of mutual fund
+        </div>
+      )}
       <div className="mututal-form">
         <input
           type="checkbox"

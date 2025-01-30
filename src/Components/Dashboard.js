@@ -42,6 +42,8 @@ const Dashboard = () => {
     setActiveIndex(index);
   }
   function handleNext() {
+    if (data.sip.length < 1) {
+    }
     setActiveIndex(activeIndex + 1);
   }
 
@@ -50,7 +52,7 @@ const Dashboard = () => {
   }
   const ActiveComponent = tabs[activeIndex].component;
   return (
-    <div>
+    <div className="dashboard">
       <div className="dashboard-header">
         <h1>Dashboard</h1>
         <DatePicker />
@@ -86,7 +88,13 @@ const Dashboard = () => {
                   handleNext();
                 }}
                 disabled={
-                  !data.name || (data.age < 18 && data.age > 40) || !data.email
+                  activeIndex === 0
+                    ? !data.name ||
+                      (data.age < 18 && data.age > 40) ||
+                      !data.email
+                    : activeIndex === 1
+                    ? data.sip.length < 1
+                    : null
                 }
               >
                 Next

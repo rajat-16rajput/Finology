@@ -58,12 +58,12 @@
   height: 85vh;
   background-color: rgb(164, 230, 164);
 }
-/* .sidebar {
+.sidebar {
   width: 20%;
   background-color: rgb(163, 241, 156);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   position: relative;
-} */
+}
 
 .sidebar-open {
   width: 40vh;
@@ -86,7 +86,7 @@
   top: 50%;
   right: -20px; /* Adjust this value to place it outside the sidebar */
   transform: translateY(-50%);
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,6 +97,7 @@
   cursor: pointer;
   border-radius: 50px;
 }
+
 li {
   list-style: none;
   text-decoration: none;
@@ -126,16 +127,28 @@ li {
   height: 75vh;
   padding-left: 400px;
 }
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: auto;
+}
+
 .dashboard-header {
   display: flex;
   justify-content: end;
   padding: 10px;
+  background-color: green;
 }
 .dashboard-content {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   box-sizing: border-box;
-  margin: 5px;
-  padding: 5px;
+  margin-left: 5px;
+  padding-left: 5px;
+  margin-right: 5px;
+  padding-right: 5px;
   height: 400px;
   width: 1000px;
 }
@@ -144,7 +157,7 @@ li {
   box-sizing: border-box;
 }
 .dashboard-page {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 2px;
   box-sizing: border-box;
   background-color: rgb(194, 248, 194);
@@ -169,11 +182,13 @@ button {
   color: white;
   box-shadow: black;
   background-color: black;
+  cursor: pointer;
 }
 
 button:disabled {
   color: gray;
   background-color: white;
+  cursor: default;
 }
 .profile-form {
   display: flex;
@@ -205,12 +220,11 @@ button:disabled {
   color: white;
   background-color: rgb(68, 141, 68);
   font: large;
-  cursor: pointer;
 
   box-shadow: black;
 }
 .active-tab {
-  background-color: rgb(230, 224, 224);
+  background-color: rgb(158, 218, 158);
   color: black;
   box-sizing: border-box;
   font-size: medium;
