@@ -185,6 +185,10 @@ button {
   cursor: pointer;
 }
 
+button.edit {
+  width: 80px;
+}
+
 button:disabled {
   color: gray;
   background-color: white;
@@ -430,8 +434,9 @@ tbody td {
   /* margin-top: 20px; */
 }
 .date-text {
-  padding: 5px;
-  margin: 5px;
+  background-color: white;
+  /* padding: 5px;
+  margin: 5px; */
   width: 100px;
   text-align: center;
   font: serif;
@@ -459,12 +464,14 @@ tbody td {
   width: 40px;
   text-align: center;
   border: 1px solid black;
-  border-radius: 4px;
-  background-color: rgb(103, 203, 103);
+  color: white;
+  box-shadow: black;
+  background-color: black;
   cursor: pointer;
 }
-.edit-date-btn:hover {
+
+/* .edit-date-btn:hover {
   background-color: rgb(134, 236, 134);
   font: large;
   text-emphasis-color: Blue;
-}
+} */

@@ -52,8 +52,8 @@ const DatePicker = () => {
         ></input>
       )}
       {showEditBtn ? (
-        <div
-          className="edit-date-btn"
+        <button
+          className="edit"
           onClick={() => {
             console.log("Edit btn clicked");
             setShowEditBtn(!showEditBtn);
@@ -61,7 +61,7 @@ const DatePicker = () => {
           }}
         >
           Edit
-        </div>
+        </button>
       ) : (
         <div className="btns">
           <div

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const MyStocks = () => {
+const Portfolio = () => {
   const [stockList, setStockList] = useState([]);
   async function fetchData() {
     const res = await fetch("http://localhost:4000/api/myStocks");
@@ -13,7 +13,7 @@ const MyStocks = () => {
 
   return (
     <div className="my-stocks">
-      <h1>My Stocks</h1>
+      <h1>Portfolio</h1>
       <ol className="my-stock-list">
         {stockList.map((entry, index) => {
           return (
@@ -27,4 +27,4 @@ const MyStocks = () => {
   );
 };
 
-export default MyStocks;
+export default Portfolio;

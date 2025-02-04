@@ -1,14 +1,14 @@
 import Profile from "./Profile";
 import MutualFund from "./MutualFund";
-import MyStocks from "./MyStocks";
+import Portfolio from "./Portfolio";
 import DatePicker from "./DatePicker";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Dashboard = () => {
   const [data, setData] = useState({
-    name: "Rajat",
-    age: 24,
-    email: "rajat@gmail.com",
+    name: "",
+    age: "",
+    email: "",
     sip: [],
   });
 
@@ -34,13 +34,13 @@ const Dashboard = () => {
       },
     },
     { name: "MutualFund", component: MutualFund },
-    { name: "MyStocks", component: MyStocks },
+    { name: "Portfolio", component: Portfolio },
   ];
 
-  function handleTabChange(index) {
-    console.log(" handleTabChange()");
-    setActiveIndex(index);
-  }
+  // function handleTabChange(index) {
+  //   console.log(" handleTabChange()");
+  //   setActiveIndex(index);
+  // }
   function handleNext() {
     if (data.sip.length < 1) {
     }
@@ -50,6 +50,19 @@ const Dashboard = () => {
   function handlePrevious() {
     setActiveIndex(activeIndex - 1);
   }
+
+  function handleSubmit() {
+    console.log("Submit clicked");
+    alert("Data Submitted Successfully");
+    setActiveIndex(0);
+    setData({
+      name: "",
+      age: "",
+      email: "",
+      sip: [],
+    });
+  }
+
   const ActiveComponent = tabs[activeIndex].component;
   return (
     <div className="dashboard">
@@ -89,9 +102,7 @@ const Dashboard = () => {
                 }}
                 disabled={
                   activeIndex === 0
-                    ? !data.name ||
-                      (data.age < 18 && data.age > 40) ||
-                      !data.email
+                    ? !data.name || data.age < 18 || !data.email
                     : activeIndex === 1
                     ? data.sip.length < 1
                     : null
@@ -100,7 +111,15 @@ const Dashboard = () => {
                 Next
               </button>
             )}
-            {activeIndex === tabs.length - 1 && <button>Submit</button>}
+            {activeIndex === tabs.length - 1 && (
+              <button
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                Submit
+              </button>
+            )}
           </div>
         </div>
       </div>

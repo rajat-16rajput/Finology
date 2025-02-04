@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import MutualFundInput from "./MutualFundInput";
 const MutualFund = ({ data, setData }) => {
   function handleChange(e) {
     // setData((prevData)=>({...prevData,data.sip.[name]}))
@@ -14,6 +14,39 @@ const MutualFund = ({ data, setData }) => {
   useEffect(() => {
     console.log(data.sip);
   }, [data.sip]);
+
+  const MutualFundData = [
+    {
+      id: 1,
+      label: "Small Cap",
+      type: "checkbox",
+      name: "smallCap",
+      checked: data.sip.includes("smallCap"),
+      onChange: (e) => {
+        return handleChange(e);
+      },
+    },
+    {
+      id: 2,
+      label: "Mid Cap",
+      type: "checkbox",
+      name: "midCap",
+      checked: data.sip.includes("midCap"),
+      onChange: (e) => {
+        return handleChange(e);
+      },
+    },
+    {
+      id: 3,
+      label: "Large Cap",
+      type: "checkbox",
+      name: "largeCap",
+      checked: data.sip.includes("largeCap"),
+      onChange: (e) => {
+        return handleChange(e);
+      },
+    },
+  ];
   return (
     <div>
       {data.sip.length < 1 && (
@@ -22,31 +55,13 @@ const MutualFund = ({ data, setData }) => {
         </div>
       )}
       <div className="mututal-form">
-        <input
-          type="checkbox"
-          name="smallCap"
-          checked={data.sip.includes("smallCap")}
-          onChange={(e) => handleChange(e)}
-        />
-        <label> Small Cap</label>
-      </div>
-      <div className="mututal-form">
-        <input
-          type="checkbox"
-          name="midCap"
-          checked={data.sip.includes("midCap")}
-          onChange={(e) => handleChange(e)}
-        />
-        <label> Mid Cap</label>
-      </div>
-      <div className="mututal-form">
-        <input
-          type="checkbox"
-          name="largeCap"
-          checked={data.sip.includes("largeCap")}
-          onChange={(e) => handleChange(e)}
-        />
-        <label> Large Cap</label>
+        {MutualFundData.map((mf) => {
+          return (
+            <div key={mf.id}>
+              <MutualFundInput mf={mf} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
