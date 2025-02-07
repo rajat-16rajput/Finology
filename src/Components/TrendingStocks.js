@@ -201,7 +201,10 @@ const TrendingStocks = () => {
 
       case "dsc":
         setSequence("original");
-        sortList = stockApiData;
+        if (!showFilterMenu) sortList = stockApiData;
+        else {
+          sortList = originalFilterList;
+        }
         break;
       default:
         break;
@@ -227,7 +230,10 @@ const TrendingStocks = () => {
 
       case "dsc":
         setSequence("original");
-        sortList = stockApiData;
+        if (!showFilterMenu) sortList = stockApiData;
+        else {
+          sortList = originalFilterList;
+        }
         break;
       default:
         break;
@@ -253,7 +259,10 @@ const TrendingStocks = () => {
 
       case "dsc":
         setSequence("original");
-        sortList = stockApiData;
+        if (!showFilterMenu) sortList = stockApiData;
+        else {
+          sortList = originalFilterList;
+        }
         break;
       default:
         break;
@@ -279,7 +288,10 @@ const TrendingStocks = () => {
 
       case "dsc":
         setSequence("original");
-        sortList = stockApiData;
+        if (!showFilterMenu) sortList = stockApiData;
+        else {
+          sortList = originalFilterList;
+        }
         break;
       default:
         break;
@@ -305,7 +317,10 @@ const TrendingStocks = () => {
 
       case "dsc":
         setSequence("original");
-        sortList = stockApiData;
+        if (!showFilterMenu) sortList = stockApiData;
+        else {
+          sortList = originalFilterList;
+        }
         break;
       default:
         break;
@@ -382,17 +397,19 @@ const TrendingStocks = () => {
           </button>
         </div>
       </div>
+
+      {showExportMenu && (
+        <ExportMenu
+          convertToCSV={convertToCSV}
+          handleDownloadXLSX={handleDownloadXLSX}
+        />
+      )}
+
       <div className="stock-body">
         {showFilterMenu ? (
           filterList.length !== 0 ? (
             //Rendering the Table from the FilteredList with the Filter Menu being displayed
             <>
-              {showExportMenu && (
-                <ExportMenu
-                  convertToCSV={convertToCSV}
-                  handleDownloadXLSX={handleDownloadXLSX}
-                />
-              )}
               <table>
                 <thead>
                   <tr>
@@ -512,14 +529,6 @@ const TrendingStocks = () => {
         ) : searchList.length !== 0 ? (
           //Rendering the Table from the FilteredList when Filter menu is disabled
           <>
-            {showExportMenu && (
-              <ExportMenu
-                showExportMenu={showExportMenu}
-                setShowExportMenu={setShowExportMenu}
-                convertToCSV={convertToCSV}
-                handleDownloadXLSX={handleDownloadXLSX}
-              />
-            )}
             <table>
               <thead>
                 <tr>
