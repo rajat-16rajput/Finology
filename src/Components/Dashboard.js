@@ -13,37 +13,14 @@ const Dashboard = () => {
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [error, setError] = useState({});
+  const [disableNext, setDisableNext] = useState(false);
   const tabs = [
-    {
-      name: "Profile",
-      component: Profile,
-      validate: () => {
-        const err = {};
-        if (!data.name) {
-          err.name = "Please Enter your name";
-        }
-        if (!data.age) {
-          err.age = "Please Enter your age";
-        }
-        if (!data.email) {
-          err.email = "Please Enter your email";
-        }
-        setError(err);
-        return err.name || err.age || err.email ? false : true;
-      },
-    },
+    { name: "Profile", component: Profile },
     { name: "MutualFund", component: MutualFund },
     { name: "Portfolio", component: Portfolio },
   ];
 
-  // function handleTabChange(index) {
-  //   console.log(" handleTabChange()");
-  //   setActiveIndex(index);
-  // }
   function handleNext() {
-    if (data.sip.length < 1) {
-    }
     setActiveIndex(activeIndex + 1);
   }
 
@@ -64,6 +41,8 @@ const Dashboard = () => {
   }
 
   const ActiveComponent = tabs[activeIndex].component;
+  console.log("disableNext : ", disableNext);
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -72,6 +51,7 @@ const Dashboard = () => {
       </div>
 
       <div className="dashboard-content">
+        {/* Dashboard Tabs */}
         <div className="dashboard-tabs">
           {tabs.map((t, index) => (
             <div className="tab-btn" key={index}>
@@ -83,8 +63,15 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+        {/* Dashboard Page */}
         <div className="dashboard-page">
-          <ActiveComponent data={data} setData={setData} error={error} />
+          <ActiveComponent
+            data={data}
+            setData={setData}
+            setDisableNext={setDisableNext}
+          />
+
+          {/* Dashboard Buttons - Next, Previous and Submit */}
           <div className="dashboard-btn-container">
             {activeIndex > 0 && (
               <button
@@ -102,7 +89,7 @@ const Dashboard = () => {
                 }}
                 disabled={
                   activeIndex === 0
-                    ? !data.name || data.age < 18 || !data.email
+                    ? disableNext
                     : activeIndex === 1
                     ? data.sip.length < 1
                     : null
