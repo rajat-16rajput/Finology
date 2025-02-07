@@ -1,88 +1,114 @@
-import React from "react";
+import Profile from "./Profile";
+import MutualFund from "./MutualFund";
+import Portfolio from "./Portfolio";
+import DatePicker from "./DatePicker";
 import { useState } from "react";
+
 const Dashboard = () => {
-  const [date, setDate] = useState("yyyy-mm-dd");
-  const [displayDate, setDisplayDate] = useState(date);
-  const [showDate, setShowDate] = useState(false);
-  const [previousDate, setPreviousDate] = useState("yyyy-mm-dd");
-  const [showEditBtn, setShowEditBtn] = useState(showDate);
-  function handleDate(val) {
-    console.log("handleDate Called");
-    setDate(val);
+  const [data, setData] = useState({
+    name: "",
+    age: "",
+    email: "",
+    sip: [],
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [disableNext, setDisableNext] = useState(false);
+  const tabs = [
+    { name: "Profile", component: Profile },
+    { name: "MutualFund", component: MutualFund },
+    { name: "Portfolio", component: Portfolio },
+  ];
+
+  function handleNext() {
+    setActiveIndex(activeIndex + 1);
   }
 
-  function handleTick() {
-    console.log("handle Tick called");
-    if (date === "yyyy-mm-dd") {
-      alert("Please select a date");
-    } else if (!showDate) {
-      setShowEditBtn(true);
-      console.log(date.split("-").reverse().join("-"));
-      setShowDate(true);
-      setPreviousDate(date);
-      setDisplayDate(date);
-    }
+  function handlePrevious() {
+    setActiveIndex(activeIndex - 1);
   }
 
-  function handleCross() {
-    console.log("handleCross called");
-    if (date === "yyyy-mm-dd") {
-      alert("Please select a date");
-    } else if (!showDate) {
-      setShowEditBtn(true);
-      setShowDate(true);
-      setDisplayDate(previousDate);
-    }
+  function handleSubmit() {
+    console.log("Submit clicked");
+    alert("Data Submitted Successfully");
+    setActiveIndex(0);
+    setData({
+      name: "",
+      age: "",
+      email: "",
+      sip: [],
+    });
   }
+
+  const ActiveComponent = tabs[activeIndex].component;
+  console.log("disableNext : ", disableNext);
+
   return (
     <div className="dashboard">
-      <h1>Dashboard</h1>
-      <div className="Date">
-        {showDate ? (
-          <p className="date-text">
-            {displayDate.split("-").reverse().join("-")}
-          </p>
-        ) : (
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => {
-              const value = e.target.value;
-              handleDate(value);
-            }}
-          ></input>
-        )}
-        {showEditBtn ? (
-          <div
-            className="edit-date-btn"
-            onClick={() => {
-              console.log("Edit btn clicked");
-              setShowEditBtn(!showEditBtn);
-              setShowDate(false);
-            }}
-          >
-            Edit
-          </div>
-        ) : (
-          <div className="btns">
-            <div
-              className="tick"
-              onClick={() => {
-                handleTick();
-              }}
-            >
-              ✓
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <DatePicker />
+      </div>
+
+      <div className="dashboard-content">
+        {/* Dashboard Tabs */}
+        <div className="dashboard-tabs">
+          {tabs.map((t, index) => (
+            <div className="tab-btn" key={index}>
+              {index === activeIndex ? (
+                <div className="active-tab">{t.name}</div>
+              ) : (
+                t.name
+              )}
             </div>
-            <div
-              className="cross"
-              onClick={() => {
-                handleCross();
-              }}
-            >
-              X
-            </div>
+          ))}
+        </div>
+        {/* Dashboard Page */}
+        <div className="dashboard-page">
+          <ActiveComponent
+            data={data}
+            setData={setData}
+            setDisableNext={setDisableNext}
+          />
+
+          {/* Dashboard Buttons - Next, Previous and Submit */}
+          <div className="dashboard-btn-container">
+            {activeIndex > 0 && (
+              <button
+                onClick={() => {
+                  handlePrevious();
+                }}
+              >
+                Previous
+              </button>
+            )}
+            {activeIndex < tabs.length - 1 && (
+              <button
+                onClick={() => {
+                  handleNext();
+                }}
+                disabled={
+                  activeIndex === 0
+                    ? disableNext
+                    : activeIndex === 1
+                    ? data.sip.length < 1
+                    : null
+                }
+              >
+                Next
+              </button>
+            )}
+            {activeIndex === tabs.length - 1 && (
+              <button
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                Submit
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

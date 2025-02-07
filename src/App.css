@@ -49,8 +49,15 @@
 
 .main {
   display: flex;
-  height: 100%;
+  height: 85vh;
   background-color: rgb(164, 230, 164);
+}
+
+.sidebar {
+  width: 20%;
+  background-color: rgb(163, 241, 156);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .sidebar-open {
@@ -74,7 +81,7 @@
   top: 50%;
   right: -20px; /* Adjust this value to place it outside the sidebar */
   transform: translateY(-50%);
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,6 +91,7 @@
   cursor: pointer;
   border-radius: 50px;
 }
+
 li {
   list-style: none;
   text-decoration: none;
@@ -111,9 +119,115 @@ li {
   padding-left: 400px;
 }
 .dashboard {
-  height: 75vh;
-  padding-left: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: auto;
 }
+
+.dashboard-header {
+  display: flex;
+  justify-content: end;
+  padding: 10px;
+  background-color: green;
+}
+.dashboard-content {
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+  margin-left: 5px;
+  padding-left: 5px;
+  margin-right: 5px;
+  padding-right: 5px;
+  height: 400px;
+  width: 1000px;
+}
+.dashboard-tabs {
+  display: flex;
+  box-sizing: border-box;
+}
+.dashboard-page {
+  /* border: 1px solid black; */
+  margin: 2px;
+  box-sizing: border-box;
+  background-color: rgb(194, 248, 194);
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.dashboard-btn-container {
+  margin-bottom: 50px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  width: 100px;
+  padding: 5px;
+  margin: 5px;
+  color: white;
+  box-shadow: black;
+  background-color: black;
+  cursor: pointer;
+}
+
+button.edit {
+  width: 80px;
+}
+
+button:disabled {
+  color: gray;
+  background-color: white;
+  cursor: default;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px;
+}
+.error-msg {
+  color: red;
+  font-size: small;
+}
+.mututal-form {
+  padding: 5px;
+  margin: 5px;
+}
+.my-stocks {
+  margin: 10px;
+}
+
+.my-stock-list {
+  margin: 10px;
+}
+
+.tab-btn {
+  padding: 4px;
+  margin: 2px;
+  border: 1px solid black;
+
+  color: white;
+  background-color: rgb(68, 141, 68);
+  font: large;
+
+  box-shadow: black;
+}
+.active-tab {
+  background-color: rgb(158, 218, 158);
+  color: black;
+  box-sizing: border-box;
+  font-size: medium;
+  padding: 2px;
+}
+/* .tab-btn:hover {
+  background-color: rgb(86, 161, 86);
+} */
 .error {
   height: 75vh;
   align-items: center;
@@ -252,6 +366,7 @@ tbody td {
 
 .stock-body {
   display: flex;
+  height: 100%;
 }
 
 .filter-menu {
@@ -290,23 +405,27 @@ tbody td {
 #option {
   padding: 5px;
 }
-.footer {
+/* .footer {
   height: 10vh;
   background-color: rgb(207, 201, 201);
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .Date {
+  padding-left: 600px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  height: 50px;
+  width: 200px;
+  /* margin-top: 20px; */
 }
 .date-text {
-  padding: 5px;
-  margin: 5px;
+  background-color: white;
+  /* padding: 5px;
+  margin: 5px; */
   width: 100px;
   text-align: center;
   font: serif;
@@ -334,12 +453,14 @@ tbody td {
   width: 40px;
   text-align: center;
   border: 1px solid black;
-  border-radius: 4px;
-  background-color: rgb(103, 203, 103);
+  color: white;
+  box-shadow: black;
+  background-color: black;
   cursor: pointer;
 }
-.edit-date-btn:hover {
+
+/* .edit-date-btn:hover {
   background-color: rgb(134, 236, 134);
   font: large;
   text-emphasis-color: Blue;
-}
+} */

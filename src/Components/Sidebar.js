@@ -5,12 +5,7 @@ import { SearchBarVisibilityContext } from "../App";
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
   const { setShowSearchBar } = useContext(SearchBarVisibilityContext);
-  // console.log("showSearchbar###", showSearchbar);
 
-  // console.log("showSearchbar###", showSearchbar);
-  // function handleSearchbarDisplay() {
-  //   setShowSearchBar(true);
-  // }
   function handleSidebar() {
     setSidebar(!sidebar);
   }

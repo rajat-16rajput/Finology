@@ -21,7 +21,7 @@ function App() {
           <RouterProvider router={contentRouter} />
         </SearchBarVisibilityContext.Provider>
       </SearchContext.Provider>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
